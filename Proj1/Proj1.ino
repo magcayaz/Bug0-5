@@ -248,11 +248,11 @@ void loop()
   cmucam2_get("TC 200 240 0 40 0 40", 'T', packet, false);
   
   // Read incoming value from packet 6 (packet 6 = can I see ANY pixels I want?)
-  if(packet[6] > 0){
+  //if(packet[6] > 0){
     // If I can, drive straight
-    rightWheel.write(60);
+    rightWheel.write(120);//orig 60
     leftWheel.write(120);
-  }
+  //}
 
   // Read values from IR sensors
   rffIR = analogRead(RIGHT_FRONT_FACING_IR_PIN);
