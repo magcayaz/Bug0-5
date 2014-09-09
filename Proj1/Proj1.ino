@@ -255,16 +255,15 @@ void loop()
   int Kp = 2;
   int output = Kp * error;
   
-  //if on right side packet 120
+  int leftWheelSpeed = 30;
+  int rightWheelSpeed = 30;
+  
+  leftWheel.write(leftWheelSpeed+90);
+  rightWheel.write(90-rightWheelSpeed);
   
   
-  rightWheel.write(output);    
-  Serial.print("leftWheel output: ");
-  Serial.println(output, DEC);
   
-  rightWheel.write(output);
-  Serial.print("rightWheel output: ");
-  Serial.println(output, DEC);
+  
   
   
   
