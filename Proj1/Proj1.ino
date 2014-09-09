@@ -255,11 +255,12 @@ void loop()
   int Kp = 2;
   int output = Kp * error;
   
-  int leftWheelSpeed = 30;
-  int rightWheelSpeed = 30;
+  int baseSpeed = 10
+  int leftWheelSpeed = baseSpeed + 0;
+  int rightWheelSpeed = baseSpeed + 0;
   
-  leftWheel.write(leftWheelSpeed+90);
-  rightWheel.write(90-rightWheelSpeed);
+  leftWheel.write(leftWheelSpeed+89);
+  rightWheel.write(89-rightWheelSpeed);
   
   
   
