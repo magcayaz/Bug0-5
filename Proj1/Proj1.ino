@@ -248,11 +248,33 @@ void loop()
   cmucam2_get("TC 200 240 0 40 0 40", 'T', packet, false);
   
   // Read incoming value from packet 6 (packet 6 = can I see ANY pixels I want?)
+  
+  int camCenter = 70;
+  int error = (packet[1] - camCenter);
+  
+  int Kp = 2;
+  int output = Kp * error;
+  
+  //if on right side packet 120
+  
+  
+  rightWheel.write(output);    
+  Serial.print("leftWheel output: ");
+  Serial.println(output, DEC);
+  
+  rightWheel.write(output);
+  Serial.print("rightWheel output: ");
+  Serial.println(output, DEC);
+  
+  
+  
   //if(packet[6] > 0){
     // If I can, drive straight
-    rightWheel.write(120);//orig 60
-    leftWheel.write(120);
+    //rightWheel.write(90\);//orig 60
+    //leftWheel.write(90);
   //}
+  
+  
 
   // Read values from IR sensors
   rffIR = analogRead(RIGHT_FRONT_FACING_IR_PIN);
