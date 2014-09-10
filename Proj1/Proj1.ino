@@ -182,7 +182,7 @@ void _updateLeftEncoder() {
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(11500);
     
   // Attach the wheel watchers
   attachInterrupt(INTERRUPT_1, _updateLeftEncoder, FALLING); 
@@ -250,21 +250,37 @@ void loop()
   // Read incoming value from packet 6 (packet 6 = can I see ANY pixels I want?)
   
   int camCenter = 70;
-  int error = (packet[1] - camCenter);
+  int error = (camCenter - packet[1]);
+  //when error positive the obj to the right
+  // negative to the left. 
+  //on robots frame:
+  //0--159
+  double kp, P, rS, lS;
+  if (abs(error) < 10){
+    //rightWheel.write(30);
+    //leftWheel.write(150);
+  }else if(abs(error) > 60){
+    //rightWheel.write(80);
+    //leftWheel.write(100);
+  }else{
+    kp = 1;
+    P = kp*error;
+    rS = map(P,-60*kp, 60*kp, 90,0);
+    lS = map(P,-60*kp, 60*kp, 90,180);
+    //rightWheel.write(rS);
+    //leftWheel.write(lS);
+    Serial.print("rightWheel output: ");
+    Serial.println(rS, DEC);
+    
+    
+    Serial.print("leftWheel output: ");
+    Serial.println(lS, DEC);
+  }
   
-  int Kp = 2;
-  int output = Kp * error;
+   
   
-  //if on right side packet 120
+     
   
-  
-  rightWheel.write(output);    
-  Serial.print("leftWheel output: ");
-  Serial.println(output, DEC);
-  
-  rightWheel.write(output);
-  Serial.print("rightWheel output: ");
-  Serial.println(output, DEC);
   
   
   
@@ -315,5 +331,6 @@ void loop()
   Serial.print(" ");
   Serial.println(lffIR, DEC);    // left front facing ir 
 }
+
 
 
