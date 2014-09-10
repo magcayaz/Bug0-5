@@ -182,7 +182,7 @@ void _updateLeftEncoder() {
 
 void setup()
 {
-  Serial.begin(11500);
+  Serial.begin(115200);
     
   // Attach the wheel watchers
   attachInterrupt(INTERRUPT_1, _updateLeftEncoder, FALLING); 
