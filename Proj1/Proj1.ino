@@ -279,8 +279,8 @@ void loop()
   
   //int error = (packet[1] - camCenter);
   
-  //int Kp = 2;
-  //int output = Kp * error;
+//  int Kp = 2;
+//  int output = Kp * error;
   
 //  int baseSpeed = 10
 //  int leftWheelSpeed = baseSpeed + 0;
