@@ -277,11 +277,20 @@ void loop()
     Serial.println(lS, DEC);
   }
   
-   
+  //int error = (packet[1] - camCenter);
   
-     
+  //int Kp = 2;
+  //int output = Kp * error;
   
+//  int baseSpeed = 10
+//  int leftWheelSpeed = baseSpeed + 0;
+//  int rightWheelSpeed = baseSpeed + 0;
+//  
+//  leftWheel.write(leftWheelSpeed+89);
+//  rightWheel.write(89-rightWheelSpeed);
   
+
+
   
   
   //if(packet[6] > 0){
