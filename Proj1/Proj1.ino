@@ -256,25 +256,21 @@ void loop()
   //on robots frame:
   //0--159
   double kp, P, rS, lS;
-  if (abs(error) < 10){
-    //rightWheel.write(30);
-    //leftWheel.write(150);
+  if (abs(error) < 20){
+    rightWheel.write(80);
+    leftWheel.write(100);
   }else if(abs(error) > 60){
-    //rightWheel.write(80);
-    //leftWheel.write(100);
+    rightWheel.write(80);
+    leftWheel.write(80);
   }else{
-    kp = 1;
+    kp = 1; //was 1
     P = kp*error;
-    rS = map(P,-60*kp, 60*kp, 90,0);
-    lS = map(P,-60*kp, 60*kp, 90,180);
-    //rightWheel.write(rS);
-    //leftWheel.write(lS);
-    Serial.print("rightWheel output: ");
-    Serial.println(rS, DEC);
+    maxSpeed = 60; //dont know the true units for this
+    rS = map(P,-maxSpeed*kp, maxSpeed*kp, 120,60);   //0 - 180
+    lS = map(P,-maxSpeed*kp, maxSpeed*kp, 120,60); //0 - 180
+    rightWheel.write(rS);
+    leftWheel.write(lS);
     
-    
-    Serial.print("leftWheel output: ");
-    Serial.println(lS, DEC);
   }
   
   //int error = (packet[1] - camCenter);
