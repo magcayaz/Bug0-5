@@ -382,98 +382,105 @@ void loop()
       resetCamera();
     }
   
-//  int b = 0;  this was working
-//  // Read incoming value from packet 6 (packet 6 = can I see ANY pixels I want?)
-//  int camCenter = 70;
-//  int error = (camCenter - packet[1]);
-//  //when error positive the obj to the right
-//  // negative to the left. 
-//  //on robots frame:
-//  //0--159
-//  int maxSpeed;
-//  double kp, P, rS, lS;
-//  if (abs(error) < 20){
-//    rightWheel.write(80);
-//    leftWheel.write(100);
-//  }else if(abs(error) > 60){
-//    rightWheel.write(80);
-//    leftWheel.write(80);
-//  }else{
-//    kp = 1; //was 1
-//    P = kp*error;
-//    maxSpeed = 60; //dont know the true units for this
-//    rS = map(P,-maxSpeed*kp, maxSpeed*kp, 120,60);   //0 - 180
-//    lS = map(P,-maxSpeed*kp, maxSpeed*kp, 120,60); //0 - 180
-//    rightWheel.write(rS);
-//    leftWheel.write(lS);
-//    
-//  }
-
-  double r = 3.500;
-  double ticks = 128.0;
-  double pi = 3.1415926;
-  double circ = pi*r*2;
-  double cpt = circ/ticks;
-  double leftW;
-  double rightW;
-  //PID reference: http://www.maelabs.ucsd.edu/mae156alib/control/PID-Control-Ardunio.pdf
-  if (state == 0){
-    if (counter == 0){
-      leftW = leftWW*cpt;   //displacement of the left wheel in cm 
-      rightW = rightWW *cpt;// displacement of the right wheel in cm
-      rightWW = leftWW;
-      startPos = leftW;
-      rightWheel.write(70);
-      leftWheel.write(110);
-    }
-    leftW = leftWW*cpt;   //displacement of the left wheel in cm 
-    rightW = rightWW *cpt;// displacement of the right wheel in cm
-    double error = (leftW - rightW);
-    int maxSpeed;
-    double kP, kI, kD, P, I, D, rS, lS, CS;
-    int maxtick = 10;
-    double integralT = 4;
-    if (abs(error)< integralT){
-      integral = integral + error;
-    }
-    else{
-      integral = 0;
-    }
-    
-    kP = 0.5; 
-    kI = 0;
-    kD = 0.5;
-    //don't 50< and see goal then go to goal. 
-    P = kP*error;
-    I = kI*integral;
-    D = kD*(lastRightW - rightW);
-    CS = P+I+D;
-    rS = map(CS,-20, 20, 90,50);     //0 - 180
-    lS = map(CS,-20, 20, 90,130);   //0 - 180
-    rightWheel.write(rS);
-    leftWheel.write(110);
-    
-    lastRightW = rightW; 
-    counter ++;
-    if ((leftW-startPos) >100){
-      state = 1;
+  int b = 0; // this was working
+  // Read incoming value from packet 6 (packet 6 = can I see ANY pixels I want?)
+  int camCenter = 70;
+  int error = (camCenter - packet[1]);
+  //when error positive the obj to the right
+  // negative to the left. 
+  //on robots frame:
+  //0--159
+  int maxSpeed;
+  double kp, P, rS, lS;
+  rfIR = analogRead(RIGHT_FACING_IR_PIN);
+  Serial.println(rfIR);
+  if (rfIR>50){                   // so if we dont have an obstacle right infront then go towards the obstacle!!!
+    if (abs(error) < 20){
+      rightWheel.write(80);
+      leftWheel.write(100);
+    }else if(abs(error) > 60){
+      rightWheel.write(80);
+      leftWheel.write(80);
+    }else{
+      kp = 1; //was 1
+      P = kp*error;
+      maxSpeed = 60; //dont know the true units for this
+      rS = map(P,-maxSpeed*kp, maxSpeed*kp, 110,70);   //0 - 180
+      lS = map(P,-maxSpeed*kp, maxSpeed*kp, 110,70); //0 - 180
+      rightWheel.write(rS);
+      leftWheel.write(lS); 
     }
   }
   else{
-    int tickquad = ((14.9*pi)/(2.0))/(cpt);
-    int error = (tickquad - (leftWW - rightWW));
-    double kp = 1; //was 1
-    double P = kp*error;
-    int maxSpeed = 60; //dont know the true units for this
-    int rS = map(P,0, tickquad, 90,120);   //0 - 180
-    int lS = map(P,0, tickquad, 90,120); //0 - 180
-    rightWheel.write(rS);
-    leftWheel.write(lS);
-    if (error <0){
-      state = 0;
-      counter = 0;
-    } 
+    rightWheel.write(80);
+    leftWheel.write(80);
   }
+
+//  double r = 3.500;
+//  double ticks = 128.0;
+//  double pi = 3.1415926;
+//  double circ = pi*r*2;
+//  double cpt = circ/ticks;
+//  double leftW;
+//  double rightW;
+//  //PID reference: http://www.maelabs.ucsd.edu/mae156alib/control/PID-Control-Ardunio.pdf
+//  if (state == 0){
+//    if (counter == 0){
+//      leftW = leftWW*cpt;   //displacement of the left wheel in cm 
+//      rightW = rightWW *cpt;// displacement of the right wheel in cm
+//      rightWW = leftWW;
+//      startPos = leftW;
+//      rightWheel.write(70);
+//      leftWheel.write(110);
+//    }
+//    leftW = leftWW*cpt;   //displacement of the left wheel in cm 
+//    rightW = rightWW *cpt;// displacement of the right wheel in cm
+//    double error = (leftW - rightW);
+//    int maxSpeed;
+//    double kP, kI, kD, P, I, D, rS, lS, CS;
+//    int maxtick = 10;
+//    double integralT = 4;
+//    if (abs(error)< integralT){
+//      integral = integral + error;
+//    }
+//    else{
+//      integral = 0;
+//    }
+//    
+//    kP = 0.5; 
+//    kI = 0;
+//    kD = 0.5;
+//   
+//    P = kP*error;
+//    I = kI*integral;
+//    D = kD*(lastRightW - rightW);
+//    CS = P+I+D;
+//    rS = map(CS,-20, 20, 90,50);     //0 - 180
+//    lS = map(CS,-20, 20, 90,130);   //0 - 180
+//    rightWheel.write(rS);
+//    leftWheel.write(110);
+//    
+//    lastRightW = rightW; 
+//    counter ++;
+//    if ((leftW-startPos) >100){
+//      state = 1;
+//    }
+//  }
+//  else{
+//    int tickquad = ((14.9*pi)/(2.0))/(cpt);
+//    int error = (tickquad - (leftWW - rightWW));
+//    double kp = 1; //was 1
+//    double P = kp*error;
+//    int maxSpeed = 60; //dont know the true units for this
+//    int rS = map(P,0, tickquad, 90,120);   //0 - 180
+//    int lS = map(P,0, tickquad, 90,120); //0 - 180
+//    rightWheel.write(rS);
+//    leftWheel.write(lS);
+//    if (error <0){
+//      state = 0;
+//      counter = 0;
+//    } 
+//  }
   
   // Read values from IR sensors
   rffIR = analogRead(RIGHT_FRONT_FACING_IR_PIN);
